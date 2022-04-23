@@ -1,7 +1,8 @@
-mustacheX =0;
-mustacheY =0;
+mustache_x=0;
+mustache_y=0;
 
-function preload() {
+function preload(){
+    mustache = loadImage("https://i.postimg.cc/3x3QzSGq/m.png");
 }
 
 function setup(){
@@ -15,10 +16,25 @@ function setup(){
     poseNet.on('pose',gotPose);
 }
 
-function modelLoaded(){
-    console.log('poseNet is Initialized')
+function draw(){
+    image(video,0,0,300,300);
+    image(mustache,mustache_x,mustache_y,60,45);
 }
 
-function gotpose(results){
+function take_snapshot(){
+    save("my_picture.png");
+}
 
+function modelLoaded(){
+    console.log("poseNet Is Initialized");
+}
+
+function gotPose(results){
+    if(results.length > 0){
+        console.log(results);
+        console.log("nose x: "+results[0].pose.nose.x);
+        mustache_x = results[0].pose.nose.x-30;
+        console.log("nose y: "+results[0].pose.nose.y);
+        mustache_y = results[0].pose.nose.y;
+    };
 }
